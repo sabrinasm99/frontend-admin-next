@@ -1,17 +1,20 @@
+import React from "react";
 import Head from "next/head";
-import Login from "../components/Login";
 import { Provider } from "react-redux";
 import store from "../components/store";
+import ComponentEditDelete from "../components/EditDelete";
 
-export default function Home() {
+function editdelete() {
   return (
     <React.Fragment>
       <Provider store={store}>
         <Head>
-          <title>Admin Purple Mart</title>
+          <title>Purple Mart</title>
         </Head>
-        <Login />
+        <ComponentEditDelete />
       </Provider>
     </React.Fragment>
   );
 }
+
+export default editdelete;

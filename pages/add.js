@@ -1,17 +1,20 @@
+import React from "react";
 import Head from "next/head";
-import Login from "../components/Login";
 import { Provider } from "react-redux";
 import store from "../components/store";
+import ComponentAdd from "../components/Add";
 
-export default function Home() {
+function add() {
   return (
     <React.Fragment>
       <Provider store={store}>
         <Head>
-          <title>Admin Purple Mart</title>
+          <title>Purple Mart</title>
         </Head>
-        <Login />
+        <ComponentAdd />
       </Provider>
     </React.Fragment>
   );
 }
+
+export default add;

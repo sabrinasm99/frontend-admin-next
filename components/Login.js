@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from "react";
-import Axios from "axios";
-import { Site } from "../config/site";
-
-function Login(props) {
+import React, { useState } from "react";
+import Router from "next/router";
+import { useSelector } from 'react-redux';
+import inBrowser from "../lib/checkInBrowser";
+import { loginUser } from "./actions/authAction";
+function Login() {
+  const auth = useSelector(state => state.auth)
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [auth, setAuth] = useState(false);
-  const [token, seToken] = useState("");
-  useEffect(() => {
-    const tokenLS = localStorage.getItem("token");
-    if (tokenLS === token) {
-      Auth.login();
-      console.log(Auth.checkStatus(), "cek STATUS");
-      setAuth(Auth.checkStatus());
-    }
-  }, []);
 
   const changeInputPassword = (event) => {
     setPassword(event.target.value);
@@ -27,25 +18,18 @@ function Login(props) {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    Axios.post(Site.loginAdmin, { username: username, password: password })
-      .then((res) => {
-        console.log(res, "ini res");
-        seToken(res.data.token);
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("name", res.data.name);
-        props.history.push("/dashboard");
-      })
-      .catch((err) =>
-        setTimeout(() => {
-          setMessage(err.response.data.msg);
-        }, 500)
-      );
+    const userData = {
+      username: username,
+      password: password,
+    };
+    loginUser(userData);
   };
 
-  //   if (auth) {
-  //     return <Redirect to="/dashboard" />;
-  //   }
-
+  if (inBrowser && localStorage.tokenLS) {
+    if (auth.isAuthenticated) {
+      Router.push("/dashboard");
+    }
+  }
   return (
     <React.Fragment>
       <div className="h-screen flex justify-center items-center">
@@ -54,10 +38,10 @@ function Login(props) {
           style={{ width: "650px" }}
         >
           <div className="hidden md:block w-1/2 p-4">
-              <img src="/undraw_publish.svg" className="h-full" />
+            <img src="/undraw_publish.svg" className="h-full" />
           </div>
-          <div className="py-10 px-5 sm:px-8 sm:py-5 w-full flex flex-col md:w-1/2">
-            <h1 className="mb-8 md:mb-12 md:mt-4 text-3xl text-center text-purple-800 font-extrabold">
+          <div className="p-5 sm:p-6 w-full flex flex-col md:w-1/2">
+            <h1 className="mb-12 md:mt-4 text-3xl text-center text-purple-800 font-extrabold">
               Login Admin
             </h1>
             <form onSubmit={onSubmit}>

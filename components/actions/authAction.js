@@ -19,6 +19,14 @@ export const loginUser = (userData) => {
     });
 };
 
+export const logoutUser = () => {
+  localStorage.removeItem('tokenLS');
+  localStorage.removeItem('name');
+  // Remove auth header for future request
+  setAuthToken(false);
+  store.dispatch(setCurrentUser({}));
+}
+
 export const setCurrentUser = (decoded) => {
     return {
         type: SET_CURRENT_USER,
